@@ -1,8 +1,7 @@
 <?php
 
-Route::get('/', function () {
-    return view('subscription');
-});
+Route::get('/', 'SubscriptionController@index');
+Route::post('/', 'SubscriptionController@store');
 
 Route::auth();
 

@@ -16,6 +16,34 @@ class CreateSuscribersTable extends Migration
             $table->increments('id');
 
 
+            // Datos personales
+
+            $table->string('first_name');
+            $table->string('last_name');
+
+            $table->string('identity_card');
+            $table->date('birth_date');
+
+            $table->string('email');
+
+            $table->string('phone');
+            $table->enum('gender', ['hombre', 'mujer']);
+
+            $table->string('address');
+            $table->string('city');
+
+            $table->string('occupation');
+            $table->string('workplace');
+
+            $table->string('validation_document');
+
+            // Datos del pago
+
+            $table->string('operation_number');
+            $table->date('payment_date');
+
+            $table->string('validation_voucher');
+
 
             $table->timestamps();
         });
