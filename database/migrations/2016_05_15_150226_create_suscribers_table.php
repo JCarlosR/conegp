@@ -35,14 +35,14 @@ class CreateSuscribersTable extends Migration
             $table->string('occupation');
             $table->string('workplace');
 
-            $table->string('validation_document');
+            $table->string('validation_document')->nullable();
 
             // Datos del pago
 
             $table->string('operation_number');
             $table->date('payment_date');
 
-            $table->string('validation_voucher');
+            $table->string('validation_voucher')->nullable();
 
 
             $table->timestamps();

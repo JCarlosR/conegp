@@ -37,7 +37,7 @@ class SubscriptionController extends Controller
             'occupation' => 'required',
             'workplace' => 'required|min:3',
 
-            'validation_document' => 'file',
+            'validation_document' => 'image',
 
 
             'operation_number' => 'required',
@@ -45,6 +45,11 @@ class SubscriptionController extends Controller
             'validation_voucher' => 'required|image|max:512'
         ]);
 
+        $validator->after(function ($validator) use ($request) {
+            if ($request->get('occupation') != 'profesional' && ! $request->hasFile('validation_document')) {
+                $validator->errors()->add('validation_document', 'Usted no ha adjuntado una imagen de su documento.');
+            }
+        });
 
         if ($validator->fails()) {
             return back()
@@ -52,34 +57,47 @@ class SubscriptionController extends Controller
                 ->withInput();
         }
 
-        /*DB::beginTransaction();
+        DB::beginTransaction();
 
-        Suscriber::create($request->only(
-            'first_name', 'last_name',
-            'identity_card', 'birth_date',
-            'email',
-            'phone', 'gender',
-            'address', 'city',
-            'occupation', 'workplace',
-            'validation_document',
-            'operation_number', 'payment_date',
-            'validation_voucher'
-        ));*/
+        try {
+            $subscriber = Suscriber::create($request->only(
+                'first_name', 'last_name',
+                'identity_card', 'birth_date',
+                'email',
+                'phone', 'gender',
+                'address', 'city',
+                'occupation', 'workplace',
+                // 'validation_document',
+                'operation_number', 'payment_date'
+                // 'validation_voucher'
+            ));
 
-        // target folder
-        $destinationPath = 'vouchers';
-        // image extension
-        $extension = $request->file('validation_voucher')->getClientOriginalExtension();
-        // use the suscriber id to make the file name
-        // $fileName = $suscriber->id . '.' . $extension;
-        // uploading file to given path
-        Input::file('image')->move($destinationPath, 'test.jpg');
+            if ($request->file('validation_document')) {
+                $documentsPath = 'documents';
+                $extension = $request->file('validation_document')->getClientOriginalExtension();
+                $fileName = $subscriber->id . '.' . $extension;
+                $request->file('validation_document')->move($documentsPath, $fileName);
+                $subscriber->validation_document = $fileName;
+            }
 
-        // sending back with message
-        return back()->with('notification', 'Usted se ha inscrito correctamente !');
+            $vouchersPath = 'vouchers';
+            $extension = $request->file('validation_voucher')->getClientOriginalExtension();
+            $fileName = $subscriber->id . '.' . $extension;
+            $request->file('validation_voucher')->move($vouchersPath, $fileName);
+            $subscriber->validation_voucher = $fileName;
 
+            $subscriber->save();
+            DB::commit();
+            return back()->with('notification', 'Usted se ha inscrito correctamente !');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors([
+                'unknown' => 'Ocurrió un error inesperado. Si tiene dudas contacte con el administrador.'
+                //'unknown' => $e->getMessage()
+            ])->withInput();;
+        }
+    }
         // var_dump( $request->file('validation_voucher')->getClientOriginalExtension() );
         // var_dump( $request->file('validation_voucher')->getSize() );
 
-    }
 }
