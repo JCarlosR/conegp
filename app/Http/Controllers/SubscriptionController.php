@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriptionController extends Controller
@@ -28,14 +29,16 @@ class SubscriptionController extends Controller
 
             'email' => 'required|email|confirmed',
 
-            'phone' => 'required|min:9',
-            'gender' => 'required',
+            'cellphone' => 'required|min:9',
+            'phone' => 'min:6',
 
-            'address' => 'min:5',
+            'gender' => 'required',
             'city' => 'required|min:4|max:25',
 
+            'address' => 'min:5',
+
             'occupation' => 'required',
-            'workplace' => 'required|min:3',
+            'workplace' => 'required|min:2',
 
             'validation_document' => 'image',
 
@@ -87,13 +90,24 @@ class SubscriptionController extends Controller
             $subscriber->validation_voucher = $fileName;
 
             $subscriber->save();
+
+            // Send a confirmation by e-mail
+            $data = [
+                'first_name' => $subscriber->first_name,
+                'registration_date' => $subscriber->created_at
+            ];
+            Mail::send('emails.welcome', $data, function ($message) use ($subscriber) {
+                $message->from('inscripciones@conegpunt2016.com', 'CONEGP UNT');
+                $message->to($subscriber->email);
+            });
+
             DB::commit();
-            return back()->with('notification', 'Usted se ha inscrito correctamente !');
+            return back()->with('notification', 'Enhorabuena !');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors([
-                'unknown' => 'Ocurrió un error inesperado. Si tiene dudas contacte con el administrador.'
-                //'unknown' => $e->getMessage()
+                // 'unknown' => 'Ocurrió un error inesperado. Si tiene dudas contacte con el administrador.'
+                'unknown' => $e->getMessage()
             ])->withInput();;
         }
     }

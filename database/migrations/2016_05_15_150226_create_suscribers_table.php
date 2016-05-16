@@ -26,11 +26,13 @@ class CreateSuscribersTable extends Migration
 
             $table->string('email');
 
+            $table->string('cellphone');
             $table->string('phone');
+
             $table->enum('gender', ['hombre', 'mujer']);
+            $table->string('city');
 
             $table->string('address');
-            $table->string('city');
 
             $table->string('occupation');
             $table->string('workplace');
@@ -44,6 +46,9 @@ class CreateSuscribersTable extends Migration
 
             $table->string('validation_voucher')->nullable();
 
+            // Estado de la suscripción
+
+            $table->boolean('active')->default(false);
 
             $table->timestamps();
         });

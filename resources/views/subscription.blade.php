@@ -44,8 +44,19 @@
 <div class="container">
     <div class="section">
 
-        <!--   Icon Section   -->
         <div class="row">
+            @if (session('notification'))
+                <div class="col s12">
+                    <div class="card green lighten-5">
+                        <div class="card-content green-text">
+                            <h5>{{ session('notification') }}</h5>
+                            <p>Te has registrado correctamente para poder formar parte del CONEGP UNT 2016.</p>
+                            <p>Hemos enviado a tu dirección de correo electrónico nuestra notificación de registro.</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="col s12 m6">
                 <div class="icon-block">
                     <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
@@ -78,14 +89,6 @@
                     <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
                     <h5 class="center">Su inscripción</h5>
                     <p class="light">Ingrese sus datos y participe de este gran evento.</p>
-
-                    @if (session('notification'))
-                        <div class="card green lighten-5">
-                            <div class="card-content green-text">
-                                <p>{{ session('notification') }}</p>
-                            </div>
-                        </div>
-                    @endif
 
                     @if (count($errors) > 0)
                         <div class="card red lighten-5">
@@ -136,9 +139,15 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input name="phone" type="text" class="validate" value="{{ old('phone') }}">
-                                <label for="phone">Nro telefónico</label>
+                                <input name="cellphone" type="text" class="validate" value="{{ old('cellphone') }}">
+                                <label for="cellphone">Teléfono móvil</label>
                             </div>
+                            <div class="input-field col s6">
+                                <input name="phone" type="text" class="validate" value="{{ old('phone') }}">
+                                <label for="phone">Teléfono fijo</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <select name="gender">
                                     <option value="hombre">Hombre</option>
@@ -146,15 +155,15 @@
                                 </select>
                                 <label for="gender">Seleccione género</label>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input name="address" type="text" class="validate" value="{{ old('address') }}">
-                                <label for="address">Dirección</label>
-                            </div>
                             <div class="input-field col s6">
                                 <input name="city" type="text" class="validate" value="{{ old('city') }}">
                                 <label for="city">Ciudad</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name="address" type="text" class="validate" value="{{ old('address') }}">
+                                <label for="address">Dirección</label>
                             </div>
                         </div>
                         <div class="row">

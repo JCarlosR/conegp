@@ -11,8 +11,9 @@ class Suscriber extends Model
         'first_name', 'last_name',
         'identity_card', 'birth_date',
         'email',
-        'phone', 'gender',
-        'address', 'city',
+        'cellphone', 'phone',
+        'gender', 'city',
+        'address',
         'occupation', 'workplace',
         // 'validation_document',
         'operation_number', 'payment_date'
