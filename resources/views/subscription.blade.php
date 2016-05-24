@@ -168,10 +168,10 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <select name="occupation">
+                                <select name="occupation" id="occupation">
                                     <option value="estudiante">Estudiante</option>
-                                    <option value="profesional">Profesional</option>
                                     <option value="rudp">Miembro RUDP</option>
+                                    <option value="profesional">Profesional</option>
                                 </select>
                                 <label for="occupation">Ocupación</label>
                             </div>
@@ -180,14 +180,16 @@
                                 <label for="workplace">Centro de estudios o laboral</label>
                             </div>
                         </div>
-                        <label for="validation_document">Adjuntar constancia de validación</label>
-                        <div class="file-field input-field">
-                            <div class="btn">
-                                <span>Documento</span>
-                                <input type="file" name="validation_document">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
+                        <div id="validation_document">
+                            <label for="validation_document">Adjuntar constancia de validación</label>
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>Documento</span>
+                                    <input type="file" name="validation_document">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
                             </div>
                         </div>
 

@@ -20,5 +20,13 @@
 
         $('select').material_select();
 
+        // Hide the validation document when the occupation is Professional
+        $('#occupation').on('change', handleOccupationChange);
+
+        function handleOccupationChange() {
+            if ($(this).val() == 'profesional')
+                $('#validation_document').slideUp();
+            else $('#validation_document').slideDown();
+        }
     }); // end of document ready
 })(jQuery); // end of jQuery name space
